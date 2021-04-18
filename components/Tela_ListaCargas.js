@@ -1,6 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { View, FlatList, StyleSheet, Text, TextInput } from 'react-native';
+import {
+  View,
+  FlatList,
+  StyleSheet,
+  Text,
+  TextInput,
+  StatusBar,
+} from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import firebase from './firebase';
 import Tela_Cargas from './Tela_Cargas';
@@ -29,6 +36,7 @@ export default function Tela_ListaCargas() {
               tipo: carga.val().tipo,
               preco: carga.val().preco,
               local: carga.val().local,
+              telefone: carga.val().telefone,
             };
 
             setCargas((oldArray) => [...oldArray, data]);
@@ -69,7 +77,7 @@ export default function Tela_ListaCargas() {
 
         <TouchableOpacity
           style={styles.btnSubmit}
-          onPress={() => navegar.navigate('Tela_CadastrarCarga')}>
+          onPress={() => navegar.navigate('Cadastrar Carga')}>
           <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#FFF' }}>
             Cadastrar uma Carga
           </Text>
@@ -97,7 +105,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     height: 50,
     width: 200,
-    backgroundColor: 'red',
+    backgroundColor: '#008080',
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 60,

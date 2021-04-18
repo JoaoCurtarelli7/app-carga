@@ -1,53 +1,79 @@
 import * as React from 'react';
-import { Image, StyleSheet, View, ImageBackground, Alert } from 'react-native';
 import {
-  Container,
-  Header,
-  Button,
+  Image,
+  StyleSheet,
+  View,
+  ImageBackground,
+  Alert,
+  StatusBar,
   Text,
-  Content,
-  Form,
-  Item,
-  Input,
-  Label,
-  Spinner,
-  FooterTab,
-  Footer,
-  Icon,
-} from 'native-base';
+} from 'react-native';
+import { Card, Title, Button, Paragraph, TextInput, Avatar } from 'react-native-paper';
+
 import { useNavigation } from '@react-navigation/native';
 import * as firebase from 'firebase';
 
-import { Col, Row, Grid } from 'react-native-easy-grid';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default class Tela_Inicial extends React.Component {
+const LeftContent = (props) => <Avatar.Icon {...props} icon="folder" />;
+
+export default class Tela_Inicio extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      nome: null,
+    };
+  }
+
+  salvar = () => {
+    if (this.state.nome != null) {
+      Alert.alert(
+        'Bem vindo ' + this.state.nome,
+        'Conheça nosso aplicativo !!'
+      );
+      this.props.navigation.navigate('Home', {
+        nome: this.state.nome,
+      });
+    } else {
+      alert('Por favor preencha todos os campos');
+    }
+  };
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.introducao}>Bem-vindo ao Sul Cargas</Text>
+        <ImageBackground
+          source={require('../assets/fundo.jpg')}
+          style={styles.logo}
+          opacity={0.8}>
+          <Text style={styles.introducao}> Seja Bem-vindo ao Sul Cargas</Text>
+          <TextInput
+            style={styles.txtinput}
+            theme={{ colors: { primary: 'teal' } }}
+            label="  Por favor insira seu nome"
+            autoCorrect={false}
+            placeholderTextColor="#FFF"
+            mode="flat"
+            onChangeText={(texto) => this.setState({ nome: texto })}
+          />
 
-        <Text style={styles.txt2}>
-          {' '}
-          O Sul Cargas disponibiliza todas cargas do sul do Brasil, junto com o
-          valor do KM e valor total{' '}
-        </Text>
+          <Card style={styles.card}>
+            <Card.Content>
+              <Title>O que é o Sul Cargas</Title>
+              <Paragraph>
+                {' '}
+                O sul cargas disponibiliza cargas que podem ser carreagadas no
+                sul do Brasil, além disso informa o valor do Km e prenchendo
+                dados descobre valor total da carga.
+              </Paragraph>
+            </Card.Content>
+          </Card>
 
-        <Button
-          style={styles.botao1}
-          onPress={() => this.props.navigation.navigate('Tela_ListaCargas')}>
-          <Text>Ver cargas</Text>
-        </Button>
-        <Button
-          style={styles.botao2}
-          onPress={() => this.props.navigation.navigate('Tela_CadastrarCarga')}>
-          <Text>Cadastrar carga</Text>
-        </Button>
-        <Button
-          style={styles.botao3}
-          onPress={() => this.props.navigation.navigate('Tela_Calcular')}>
-          <Text>Calcular valor limpo do frete</Text>
-        </Button>
-  
+          <Button style={styles.botao3} onPress={() => this.salvar()}>
+            <Text style={styles.txt}>Seguir  </Text>{' '}
+            <Icon name="angle-right" color="white" size={24} />
+          </Button>
+        </ImageBackground>
       </View>
     );
   }
@@ -55,60 +81,48 @@ export default class Tela_Inicial extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 24,
-    backgroundColor: '#1C1C1C',
-    height: 500,
-    width: 375,
-    flex: 1,
+    width: '100%',
+    height: '100%',
   },
 
   introducao: {
-    margin: 20,
     color: 'white',
-    fontSize: 20,
+    fontSize: 22,
     justifyContent: 'center',
     fontWeight: 'bold',
     textAlign: 'center',
     flex: 1,
+    marginLeft: 40,
+    marginRight: 40,
+    marginBottom: -20,
+    marginTop: 20,
   },
 
-  txt2: {
-    fontSize: 16,
-    marginTop: 10,
-    justifyContent: 'center',
-    fontWeight: 'common',
-    textAlign: 'center',
-    flex: 5,
-    color: 'white',
+  txtinput: {
+    marginBottom: 50,
+    marginLeft: 10,
+    marginRight: 10,
   },
 
-  botao1: {
-    alignItems: 'center',
-    backgroundColor: 'red',
-    justifyContent: 'center',
-    marginBottom: 30,
-    marginLeft: 9,
-    width: '90%',
-    borderRadius: 15,
-  },
-  botao2: {
-    alignItems: 'center',
-    backgroundColor: 'red',
-    justifyContent: 'center',
-    marginBottom: 30,
-    marginLeft: 9,
-    width: '90%',
-    borderRadius: 15,
-  },
   botao3: {
     alignItems: 'center',
-    backgroundColor: 'red',
+    backgroundColor: '#008080',
     justifyContent: 'center',
-    marginBottom: 80,
-    marginLeft: 9,
+    marginBottom: 100,
+    marginLeft: 105,
+    width: '40%',
     borderRadius: 15,
-
-    width: '90%',
+    marginTop: 10,
   },
-
+  card: {
+    margin: 20,
+  },
+  txt: {
+    color: 'white',
+   
+  },
+  logo: {
+    width: '100%',
+    height: '100%',
+  },
 });
